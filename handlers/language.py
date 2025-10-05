@@ -11,14 +11,15 @@ def register(dp):
         lang = user.get('lang', 'ru')
         await message.answer(
             "Выберите язык:" if lang == "ru" else "Choose language:",
-            reply_markup=get_language_keyboard()
+            reply_markup=get_language_keyboard(lang)
         )
 
-    @dp.message_handler(lambda msg: msg.text in ["Русский 🇷🇺", "English 🇬🇧"])
-    async def set_language(message: types.Message):
-        lang_code = "ru" if message.text == "Русский 🇷🇺" else "en"
-        set_lang(message.from_user.id, lang_code)
-        await message.answer(
+    @dp.callback_query_handler(lambda cb: cb.data.startswith("set_lang_"))
+    async def set_language_cb(cb: types.CallbackQuery):
+        lang_code = cb.data.split("_")[-1]
+        set_lang(cb.from_user.id, lang_code)
+        await cb.message.edit_text(
             "Язык изменён!" if lang_code == "ru" else "Language updated!",
-            reply_markup=get_main_menu(message.from_user.id)
+            reply_markup=get_main_menu(cb.from_user.id)
         )
+        await cb.answer()

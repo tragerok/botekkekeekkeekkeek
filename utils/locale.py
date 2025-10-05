@@ -1,6 +1,5 @@
 import json
 import os
-
 LOCALES = {}
 
 def load_locales():
