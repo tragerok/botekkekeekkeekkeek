@@ -8,8 +8,8 @@ def get_main_menu(user_id):
     if info and 'lang' in info and info['lang'] in ['ru', 'en']:
         lang = info['lang']
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.add(L("main_menu_profile", lang), L("main_menu_licenses", lang))
-    kb.add(L("main_menu_buy", lang), L("main_menu_renew", lang))
+    kb.add(L("main_menu_profile", lang))
+    kb.add(L("main_menu_buy_license", lang), L("main_menu_renew", lang))
     kb.add(L("main_menu_topup", lang))
     kb.add(L("main_menu_support", lang), L("main_menu_language", lang))
     return kb

@@ -1,6 +1,6 @@
 from aiogram import types
 from keyboards.main_menu import get_main_menu
-from utils.db import get_user
+from utils.db import get_user, get_licenses_for_user
 from utils.locale import L
 
 def register(dp):
@@ -12,7 +12,8 @@ def register(dp):
         text = f"{L('profile_title', lang)}\n"
         text += f"{L('profile_id', lang)} <code>{user_id}</code>\n"
         text += f"{L('profile_balance', lang)} <b>{user.get('balance', 0)}$</b>\n"
-        licenses = user.get("licenses", [])
+
+        licenses = get_licenses_for_user(user_id)
         if licenses:
             text += f"\n{L('profile_licenses', lang)}:\n"
             for lic in licenses:
@@ -23,4 +24,5 @@ def register(dp):
                 )
         else:
             text += f"\n{L('profile_no_licenses', lang)}\n"
+
         await message.answer(text, parse_mode="HTML", reply_markup=get_main_menu(user_id))
